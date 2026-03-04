@@ -1,0 +1,13 @@
+@echo off
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\chocolate-caliente-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\lubricante-retardante-masculino-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\choco-lub-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\fruti-lub-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\kit-suave-sumision-starsex-rojo"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\plug-metalico-kitty-s"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\feromona-enamor-starsex-masculina-30ml"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\set-anillos-pene-donuts-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\bolas-chinas-vibradoras-inalambricas-starsex"
+mkdir "c:\desarrollo\SilkDeliuxe\silkdeluxe\public\products\kit-de-sade-starsex"
+echo Hecho!

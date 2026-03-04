@@ -18,23 +18,21 @@ export function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Colecciones", href: "/collections" },
+    { name: "Inicio", href: "/" },
     { name: "Catálogo", href: "/products" },
-    { name: "Filosofía", href: "/#philosophy" },
     { name: "Contacto", href: "/contact" },
   ];
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        isScrolled ? "glass py-4" : "bg-transparent py-6"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${isScrolled ? "glass-premium py-3" : "bg-transparent py-6"
+        }`}
     >
       <div className="container mx-auto px-6 md:px-12 flex items-center justify-between">
         {/* Logo */}
-        <Link href="/" className="relative z-50">
-          <h1 className="font-serif text-2xl tracking-widest uppercase text-white">
-            Silk <span className="text-[#d4af37]">Deluxe</span>
+        <Link href="/" className="relative z-50 group">
+          <h1 className="font-serif text-2xl tracking-widest uppercase text-white flex items-center gap-2">
+            Silk <span className="text-gradient-gold group-hover:opacity-80 transition-opacity">Deluxe</span>
           </h1>
         </Link>
 
@@ -44,7 +42,7 @@ export function Navbar() {
             <Link
               key={link.name}
               href={link.href}
-              className="text-xs tracking-[0.2em] uppercase text-gray-400 hover:text-[#d4af37] transition-colors duration-300"
+              className="text-xs tracking-[0.2em] uppercase text-gray-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#fdfbf5] hover:to-[#d4af37] transition-all duration-500 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-gradient-gold hover:after:w-full after:transition-all after:duration-500"
             >
               {link.name}
             </Link>
@@ -75,7 +73,7 @@ export function Navbar() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="font-serif text-3xl tracking-widest uppercase text-gray-300 hover:text-[#d4af37] transition-colors duration-300"
+                  className="font-serif text-3xl tracking-widest uppercase text-gray-300 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#fdfbf5] hover:to-[#d4af37] transition-all duration-500"
                 >
                   {link.name}
                 </Link>
