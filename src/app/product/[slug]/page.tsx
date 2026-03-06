@@ -41,7 +41,7 @@ export default function ProductPage() {
   }
 
   const whatsappMessage = `Hola, quiero este producto: ${product.name}`;
-  const whatsappUrl = `https://wa.me/1234567890?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappUrl = `https://wa.me/56995294014?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">

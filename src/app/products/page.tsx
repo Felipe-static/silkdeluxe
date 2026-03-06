@@ -116,7 +116,7 @@ export default function CatalogPage() {
                 </div>
               </Link>
               <a
-                href={`https://wa.me/1234567890?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
+                href={`https://wa.me/56995294014?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full text-center py-4 rounded-full text-[10px] tracking-[0.2em] uppercase text-white hover:text-white border border-[#1a1a1a] group-hover:border-transparent group-hover:bg-[#d4af37]/10 transition-all duration-500 mt-auto flex items-center justify-center gap-2 group/btn relative overflow-hidden"

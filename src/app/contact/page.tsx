@@ -33,7 +33,7 @@ export default function ContactPage() {
               title: "WhatsApp",
               desc: "Asesoría inmediata y privada.",
               action: "Contactar",
-              href: "https://wa.me/1234567890"
+              href: "https://wa.me/56995294014"
             },
             {
               icon: <Mail className="w-8 h-8 text-[#d4af37]" />,

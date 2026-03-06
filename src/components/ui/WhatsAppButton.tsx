@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function WhatsAppButton() {
-  const phoneNumber = "1234567890"; // Replace with actual number
+  const phoneNumber = "56995294014"; // Replace with actual number
   const message = "Hola Silk Deluxe, me gustaría recibir asesoría personalizada.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 
@@ -20,7 +20,7 @@ export function WhatsAppButton() {
       aria-label="Contactar por WhatsApp"
     >
       <MessageCircle size={28} className="group-hover:scale-110 transition-transform duration-300" />
-      
+
       {/* Tooltip */}
       <span className="absolute right-full mr-4 bg-black/80 backdrop-blur-md text-white text-sm px-4 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300 whitespace-nowrap pointer-events-none border border-white/10">
         Asesoría Privada
