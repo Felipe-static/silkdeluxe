@@ -92,7 +92,7 @@ export default function CatalogPage() {
               className="group cursor-pointer flex flex-col glass-premium rounded-2xl p-4 md:p-5 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500 backdrop-blur-md h-full"
             >
               <Link href={`/product/${product.slug}`} className="flex-grow flex flex-col outline-none">
-                <div className="relative aspect-[3/4] overflow-hidden rounded-xl mb-6 bg-[#0a0a0a] border-gradient-gold flex-shrink-0">
+                <div className="relative aspect-square overflow-hidden rounded-xl mb-6 bg-[#0a0a0a] border-gradient-gold flex-shrink-0">
                   <Image
                     src={product.images[0]}
                     alt={product.name}
