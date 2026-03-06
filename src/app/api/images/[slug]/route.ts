@@ -1,6 +1,4 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
 
 export const runtime = 'edge';
 
@@ -12,34 +10,17 @@ export async function GET(
         const resolvedParams = await params;
         const slug = resolvedParams.slug;
 
-        // Ruta base public/products
-        const baseProductsDir = path.join(process.cwd(), 'public', 'products');
-        if (!fs.existsSync(baseProductsDir)) {
-            fs.mkdirSync(baseProductsDir, { recursive: true });
-        }
+        // Try to fetch a pre-generated manifest from the public folder
+        const origin = new URL(request.url).origin;
+        const manifestUrl = `${origin}/products/${slug}/images.json`;
 
-        // Ruta a la carpeta de imágenes del producto
-        const imagesDirectory = path.join(process.cwd(), 'public', 'products', slug);
-
-        // Si la carpeta no existe, la creamos y devolvemos un array vacío
-        if (!fs.existsSync(imagesDirectory)) {
-            fs.mkdirSync(imagesDirectory, { recursive: true });
+        const res = await fetch(manifestUrl);
+        if (!res.ok) {
             return NextResponse.json({ images: [] });
         }
 
-        // Leemos los archivos de la carpeta
-        const fileNames = fs.readdirSync(imagesDirectory);
-
-        // Filtramos solo archivos de imagen comunes
-        const imageFiles = fileNames.filter(file => {
-            const ext = path.extname(file).toLowerCase();
-            return ['.jpg', '.jpeg', '.png', '.webp', '.gif'].includes(ext);
-        });
-
-        // Construimos la ruta pública para cada imagen
-        const publicImagePaths = imageFiles.map(file => `/products/${slug}/${file}`);
-
-        return NextResponse.json({ images: publicImagePaths });
+        const data = await res.json();
+        return NextResponse.json({ images: data.images || [] });
     } catch (error) {
         console.error("Error reading product images:", error);
         return NextResponse.json({ images: [] }, { status: 500 });
