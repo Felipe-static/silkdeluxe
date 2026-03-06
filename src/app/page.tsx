@@ -40,14 +40,6 @@ export default function Home() {
       <section className="relative h-screen flex items-center justify-center overflow-hidden bg-[#050505]">
         <div className="absolute inset-0 z-0 flex items-center justify-center">
           <div className="absolute inset-0 bg-gradient-to-b from-[#050505]/80 via-[#050505]/40 to-[#050505]/95 z-10" />
-          <Image
-            src="/hero-cover-premium.png"
-            alt="Silk Deluxe Hero"
-            fill
-            className="object-cover opacity-60 animate-slow-zoom"
-            priority
-            unoptimized={true}
-          />
         </div>
 
         {/* Hero Content */}
