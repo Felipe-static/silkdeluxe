@@ -3,10 +3,25 @@
 import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
-import { collections } from "@/lib/data";
+import { dummyProducts } from "../../lib/data";
 import { ArrowRight } from "lucide-react";
 
 export default function CollectionsPage() {
+  // Extract unique collections from dummyProducts
+  const collections = Array.from(
+    new Set(dummyProducts.map((product) => product.collection))
+  ).map((name) => {
+    const collectionProducts = dummyProducts.filter(
+      (product) => product.collection === name
+    );
+    return {
+      id: name,
+      name,
+      description: collectionProducts[0]?.description || "",
+      image: collectionProducts[0]?.images[0] || "/default-image.jpg"
+    };
+  });
+
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">
       <div className="container mx-auto">
