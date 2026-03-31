@@ -1,7 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Sparkles, Heart } from "lucide-react";
+import { Sparkles, Heart, MapPin, Clock, Instagram } from "lucide-react";
 
 export default function NosotrosPage() {
   return (
@@ -49,7 +49,50 @@ export default function NosotrosPage() {
               Más que vender productos, Silk Deluxe busca acompañar desde el conocimiento, promoviendo el autoconocimiento, la conexión personal y una sexualidad vivida de manera más consciente y libre.
             </p>
           </div>
-          
+          <div className="mt-16 pt-12 border-t border-[#d4af37]/20 grid grid-cols-1 md:grid-cols-3 gap-8 text-center text-[#e5e5e5]">
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center border border-[#d4af37]/30 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:scale-110 transition-transform duration-300">
+                <MapPin className="w-5 h-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <h3 className="font-serif text-[#d4af37] text-xl mb-2 tracking-wide uppercase">Visítanos</h3>
+                <p className="text-sm md:text-base opacity-80 font-light">Puerto Condor 1801</p>
+                <p className="text-sm md:text-base opacity-80 font-light">Puerto Montt, Los Lagos</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center border border-[#d4af37]/30 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:scale-110 transition-transform duration-300">
+                <Clock className="w-5 h-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <h3 className="font-serif text-[#d4af37] text-xl mb-2 tracking-wide uppercase">Horario</h3>
+                <p className="text-sm md:text-base opacity-80 font-light">Lunes a Viernes</p>
+                <p className="text-sm md:text-base opacity-80 font-light">11:00 a 19:00 hrs</p>
+              </div>
+            </div>
+
+            <div className="flex flex-col items-center space-y-4">
+              <div className="w-12 h-12 rounded-full bg-[#d4af37]/10 flex items-center justify-center border border-[#d4af37]/30 shadow-[0_0_15px_rgba(212,175,55,0.2)] hover:scale-110 transition-transform duration-300">
+                <Instagram className="w-5 h-5 text-[#d4af37]" />
+              </div>
+              <div>
+                <h3 className="font-serif text-[#d4af37] text-xl mb-2 tracking-wide uppercase">Síguenos</h3>
+                <a 
+                  href="https://www.instagram.com/silkdeluxe.spa/" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="text-sm md:text-base opacity-80 hover:text-[#d4af37] hover:opacity-100 transition-all duration-300 font-light flex items-center justify-center gap-2 group"
+                >
+                  <span className="relative pb-1">
+                    @silkdeluxe.spa
+                    <span className="absolute bottom-0 left-0 w-0 h-[1px] bg-[#d4af37] transition-all duration-300 group-hover:w-full"></span>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+
           <div className="mt-16 flex justify-center">
             <Heart className="text-[#d4af37] opacity-60 w-8 h-8 animate-pulse" />
           </div>
