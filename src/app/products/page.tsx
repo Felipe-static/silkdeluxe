@@ -5,15 +5,52 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { dummyProducts, Product } from "@/lib/data";
-import { Filter } from "lucide-react";
+import { Filter, X, ChevronDown, DollarSign } from "lucide-react";
 
 export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
-  const categories = ["Todos", ...Array.from(new Set(dummyProducts.map(p => p.category)))];
+  
+  // 1. Determinar productos de la categoría activa para calcular límites reales
+  const categoryProducts = dummyProducts.filter(p => 
+    activeCategory === "Todos" || p.category?.trim() === activeCategory
+  );
+  
+  // 2. Calcular límites dinámicos (mínimo y máximo real del set actual)
+  const currentMin = categoryProducts.length > 0 ? Math.min(...categoryProducts.map(p => p.price)) : 0;
+  const currentMax = categoryProducts.length > 0 ? Math.max(...categoryProducts.map(p => p.price)) : 200000;
+  
+  const [minPrice, setMinPrice] = useState(0);
+  const [maxPrice, setMaxPrice] = useState(200000);
+  const [showPriceFilter, setShowPriceFilter] = useState(false);
+  
+  // 3. Sincronizar el slider cuando cambia la categoría o los datos
+  useEffect(() => {
+    setMinPrice(currentMin);
+    setMaxPrice(currentMax);
+  }, [activeCategory, currentMin, currentMax]);
+  
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const collectionQuery = params.get("collection");
+    if (collectionQuery) {
+      setActiveCategory(collectionQuery);
+    }
+  }, []);
 
-  const filteredProducts = activeCategory === "Todos"
-    ? dummyProducts
-    : dummyProducts.filter(p => p.category === activeCategory);
+  // Obtenemos solo las categorías válidas de los productos (importadas del CSV)
+  const categories = ["Todos", ...Array.from(new Set(dummyProducts.map(p => p.category?.trim()).filter(Boolean)))];
+
+  const filteredProducts = dummyProducts.filter(p => {
+    const matchesCategory = activeCategory === "Todos" || p.category?.trim() === activeCategory;
+    const matchesMinPrice = p.price >= minPrice;
+    const matchesMaxPrice = p.price <= maxPrice;
+    return matchesCategory && matchesMinPrice && matchesMaxPrice;
+  });
+
+  const clearFilters = () => {
+    setActiveCategory("Todos");
+    // Al resetear categoría, el useEffect ya volverá a poner los precios globales
+  };
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">
@@ -38,26 +75,110 @@ export default function CatalogPage() {
           </motion.p>
         </div>
 
-        {/* Filters */}
-        <div className="flex flex-col md:flex-row justify-between items-center mb-12 gap-6 border-b border-[#d4af37]/20 pb-8">
-          <div className="flex gap-4 overflow-x-auto w-full md:w-auto pb-4 md:pb-0 scrollbar-hide">
-            {categories.map((category) => (
-              <button
-                key={category}
-                onClick={() => setActiveCategory(category)}
-                className={`px-6 py-3 rounded-full text-[10px] tracking-[0.2em] uppercase whitespace-nowrap transition-all duration-300 ${activeCategory === category
-                  ? "bg-gradient-gold text-[#0d1a19] shadow-[0_0_20px_rgba(212,175,55,0.4)] font-medium"
-                  : "glass-premium text-white hover:text-[#d4af37] border border-transparent hover:border-[#d4af37]/30"
-                  }`}
+        {/* Integrated Navigation & Filter Section */}
+        <div className="mb-20 space-y-12">
+          {/* Categories bar */}
+          <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-b border-[#d4af37]/10 pb-8">
+            <div className="flex gap-3 overflow-x-auto w-full pb-4 md:pb-0 scrollbar-hide">
+              {categories.map((category) => (
+                <button
+                  key={category}
+                  onClick={() => setActiveCategory(category)}
+                  className={`px-5 py-2.5 rounded-full text-[9px] md:text-[10px] tracking-[0.2em] uppercase whitespace-nowrap transition-all duration-300 ${activeCategory === category
+                    ? "bg-gradient-gold text-[#0d1a19] shadow-[0_0_20px_rgba(212,175,55,0.4)] font-medium"
+                    : "glass-premium text-white/70 hover:text-[#d4af37] border border-transparent hover:border-[#d4af37]/30"
+                    }`}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+            
+            <div className="flex gap-4 items-center shrink-0">
+              <button 
+                onClick={() => setShowPriceFilter(!showPriceFilter)}
+                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase transition-all duration-300 border ${showPriceFilter ? "bg-[#d4af37]/20 border-[#d4af37] text-[#d4af37]" : "glass-premium text-white/70 border-transparent hover:border-[#d4af37]/30"}`}
               >
-                {category}
+                <DollarSign size={12} /> Precio <ChevronDown size={12} className={`transition-transform duration-300 ${showPriceFilter ? "rotate-180" : ""}`} />
               </button>
-            ))}
+
+              {(activeCategory !== "Todos" || minPrice !== Math.min(...dummyProducts.map(p => p.price)) || maxPrice !== Math.max(...dummyProducts.map(p => p.price))) && (
+                <button 
+                  onClick={clearFilters}
+                  className="flex items-center gap-2 text-[#666] hover:text-white transition-colors text-[9px] tracking-widest uppercase shrink-0 border-b border-transparent hover:border-[#d4af37]/50 pb-0.5"
+                >
+                  <X size={12} /> Limpiar Filtros
+                </button>
+              )}
+            </div>
           </div>
 
-          <button className="flex items-center gap-2 text-[#888] hover:text-[#d4af37] transition-colors text-xs tracking-widest uppercase">
-            <Filter size={16} /> Filtrar
-          </button>
+          {/* Integrated Price Slider - Toggleable & Responsive */}
+          <motion.div 
+            initial={false}
+            animate={{ 
+              height: showPriceFilter ? "auto" : 0, 
+              opacity: showPriceFilter ? 1 : 0,
+              marginTop: showPriceFilter ? 32 : 0 
+            }}
+            className="overflow-hidden"
+          >
+            <div className="glass-premium rounded-2xl px-6 md:px-10 py-5 border border-[#d4af37]/10 flex flex-col md:flex-row items-center gap-8 md:gap-16">
+              <div className="flex flex-col gap-1 min-w-[140px]">
+                <span className="text-[9px] tracking-[0.3em] uppercase text-[#d4af37] font-medium">Búsqueda por Precio</span>
+                <span className="text-[10px] text-[#888] font-light">Ajusta el rango para filtrar</span>
+              </div>
+              
+              <div className="flex-grow w-full relative h-1 bg-[#1a1a1a] rounded-full my-6 md:my-0">
+                {/* Track highlight */}
+                <div 
+                  className="absolute h-full bg-gradient-to-r from-[#d4af37]/60 to-[#d4af37] rounded-full"
+                  style={{ 
+                    left: `${((minPrice - currentMin) / (currentMax - currentMin || 1)) * 100}%`, 
+                    right: `${100 - ((maxPrice - currentMin) / (currentMax - currentMin || 1)) * 100}%` 
+                  }}
+                />
+                
+                {/* Dual Slider Thumbs */}
+                <input
+                  type="range"
+                  min={currentMin}
+                  max={currentMax}
+                  value={minPrice}
+                  onChange={(e) => setMinPrice(Math.min(Number(e.target.value), maxPrice - (currentMax - currentMin) * 0.05))}
+                  className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none cursor-pointer z-20 slider-thumb-premium"
+                />
+                <input
+                  type="range"
+                  min={currentMin}
+                  max={currentMax}
+                  value={maxPrice}
+                  onChange={(e) => setMaxPrice(Math.max(Number(e.target.value), minPrice + (currentMax - currentMin) * 0.05))}
+                  className="absolute w-full h-1 appearance-none bg-transparent pointer-events-none cursor-pointer z-20 slider-thumb-premium"
+                />
+              </div>
+
+              <div className="flex items-center gap-3 shrink-0">
+                <div className="flex flex-col items-center">
+                  <span className="text-[8px] uppercase tracking-tighter text-[#555] mb-1">Desde</span>
+                  <span className="glass-premium px-3 py-1 rounded-lg border border-[#d4af37]/20 text-xs text-white">
+                    ${minPrice.toLocaleString()}
+                  </span>
+                </div>
+                <div className="w-2 h-px bg-[#333] mt-4" />
+                <div className="flex flex-col items-center">
+                  <span className="text-[8px] uppercase tracking-tighter text-[#555] mb-1">Hasta</span>
+                  <span className="glass-premium px-3 py-1 rounded-lg border border-[#d4af37]/20 text-xs text-white">
+                    ${maxPrice.toLocaleString()}
+                  </span>
+                </div>
+              </div>
+
+              <div className="hidden lg:block text-[#444] text-[9px] tracking-wide uppercase italic ml-4">
+                {filteredProducts.length} <span className="opacity-50">Items</span>
+              </div>
+            </div>
+          </motion.div>
         </div>
 
         {/* Grid */}
