@@ -45,9 +45,14 @@ export default function ContactPage() {
             {
               icon: <MapPin className="w-8 h-8 text-[#d4af37]" />,
               title: "Boutique",
-              desc: "Atención con cita previa.",
+              desc: (
+                <>
+                  Puerto Condor 1801 <br />
+                  Puerto Montt, Los Lagos <br />
+                </>
+              ),
               action: "Agendar",
-              href: "#"
+              href: ""
             }
           ].map((item, i) => (
             <motion.div

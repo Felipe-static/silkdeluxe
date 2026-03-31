@@ -145,4 +145,24 @@
   .slider-thumb-premium::-moz-range-thumb:hover {
     transform: scale(1.15);
   }
+
+  /* Custom Elegant Scrollbar */
+  .scrollbar-custom::-webkit-scrollbar {
+    height: 3px;
+  }
+  .scrollbar-custom::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb {
+    background: rgba(212, 175, 55, 0.1);
+    border-radius: 10px;
+    transition: background 0.3s;
+  }
+  .scrollbar-custom::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 175, 55, 0.4);
+  }
+  .scrollbar-custom {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(212, 175, 55, 0.2) transparent;
+  }
 }

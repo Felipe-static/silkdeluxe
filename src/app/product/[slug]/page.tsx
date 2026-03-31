@@ -7,9 +7,12 @@ import { useParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { dummyProducts, Product } from "@/lib/data";
-import { MessageCircle, ChevronRight, ShieldCheck, Truck, RefreshCcw } from "lucide-react";
+import { MessageCircle, ChevronRight, ShieldCheck, Truck, RefreshCcw, ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export default function ProductPage() {
+  const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
   const params = useParams();
   const slug = params.slug as string;
 
@@ -95,75 +98,31 @@ export default function ProductPage() {
               </p>
 
               {/* CTA */}
-              <div className="mb-16">
+              <div className="mb-16 flex flex-col sm:flex-row gap-4">
                 <a
-                  href={whatsappUrl}
+                  href={`https://wa.me/56953237833?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-center gap-3 bg-transparent border border-[#d4af37]/50 text-white py-5 rounded-full font-medium tracking-widest uppercase text-sm hover:bg-[#d4af37] hover:text-[#0d1a19] transition-all duration-500 group shadow-[0_0_20px_rgba(212,175,55,0.1)] hover:shadow-[0_0_30px_rgba(212,175,55,0.2)]"
+                  className="flex-1 flex items-center justify-center gap-3 bg-transparent border border-[#d4af37]/30 text-white py-5 rounded-full font-medium tracking-widest uppercase text-sm hover:border-[#d4af37] hover:bg-[#d4af37]/10 transition-all duration-300"
                 >
                   <MessageCircle size={20} className="group-hover:scale-110 transition-transform" />
-                  Pedir por WhatsApp
+                  Pedir
                 </a>
-                <p className="text-center text-[#888] text-xs tracking-widest uppercase mt-4">
-                  Asesoría privada y discreta garantizada
-                </p>
+                <button
+                  onClick={() => {
+                    addToCart(product);
+                    setIsAdded(true);
+                    setTimeout(() => setIsAdded(false), 2000);
+                  }}
+                  className={`flex-1 flex items-center justify-center gap-3 bg-gradient-gold text-[#0A0A0A] py-5 rounded-full font-medium tracking-[0.2em] uppercase text-sm hover:scale-[1.02] transition-all duration-300 shadow-[0_0_20px_rgba(212,175,55,0.2)] ${isAdded ? "opacity-80 scale-[0.98]" : ""}`}
+                >
+                  <ShoppingBag size={20} />
+                  {isAdded ? "Añadido al Carrito" : "Agregar al Carrito"}
+                </button>
               </div>
-
-              {/* Tabs */}
-              <div className="border-t border-[#1a1a1a] pt-8">
-                <div className="flex gap-8 mb-8 border-b border-[#1a1a1a] pb-4">
-                  {["detalles", "envíos", "garantía"].map((tab) => (
-                    <button
-                      key={tab}
-                      onClick={() => setActiveTab(tab)}
-                      className={`text-sm tracking-widest uppercase transition-colors duration-300 ${activeTab === tab ? "text-[#d4af37] font-medium" : "text-[#888] hover:text-[#d4af37]"
-                        }`}
-                    >
-                      {tab}
-                    </button>
-                  ))}
-                </div>
-
-                <AnimatePresence mode="wait">
-                  <motion.div
-                    key={activeTab}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-[#888] font-light leading-relaxed"
-                  >
-                    {activeTab === "detalles" && (
-                      <div>
-                        <p className="mb-6">{product.details}</p>
-                        <ul className="space-y-3">
-                          {product.features.map((feature, i) => (
-                            <li key={i} className="flex items-center gap-3">
-                              <div className="w-1.5 h-1.5 rounded-full bg-[#d4af37]" />
-                              {feature}
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
-
-                    {activeTab === "envíos" && (
-                      <div className="flex items-start gap-4">
-                        <Truck className="w-6 h-6 text-[#d4af37] flex-shrink-0 mt-1" />
-                        <p>{product.shipping}</p>
-                      </div>
-                    )}
-
-                    {activeTab === "garantía" && (
-                      <div className="flex items-start gap-4">
-                        <ShieldCheck className="w-6 h-6 text-[#d4af37] flex-shrink-0 mt-1" />
-                        <p>{product.warranty}</p>
-                      </div>
-                    )}
-                  </motion.div>
-                </AnimatePresence>
-              </div>
+              <p className="text-center text-[#888] text-xs tracking-widest uppercase mt-4">
+                Asesoría privada y discreta garantizada
+              </p>
             </motion.div>
           </div>
         </div>
@@ -171,3 +130,4 @@ export default function ProductPage() {
     </div>
   );
 }
+

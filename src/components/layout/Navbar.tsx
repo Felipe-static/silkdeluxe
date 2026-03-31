@@ -3,11 +3,13 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingBag } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { totalItems, toggleCart } = useCart();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,27 +39,60 @@ export function Navbar() {
           </h1>
         </Link>
 
-        {/* Desktop Nav */}
-        <nav className="hidden md:flex items-center gap-10">
-          {navLinks.map((link) => (
-            <Link
-              key={link.name}
-              href={link.href}
-              className="text-xs tracking-[0.2em] uppercase text-gray-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#fdfbf5] hover:to-[#d4af37] transition-all duration-500 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-gradient-gold hover:after:w-full after:transition-all after:duration-500"
-            >
-              {link.name}
-            </Link>
-          ))}
-        </nav>
+        {/* Desktop Nav & Actions */}
+        <div className="hidden md:flex items-center gap-10">
+          <nav className="flex items-center gap-10">
+            {navLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                className="text-xs tracking-[0.2em] uppercase text-gray-400 hover:text-transparent hover:bg-clip-text hover:bg-gradient-to-r hover:from-[#fdfbf5] hover:to-[#d4af37] transition-all duration-500 relative after:content-[''] after:absolute after:-bottom-1 after:left-0 after:w-0 after:h-[1px] after:bg-gradient-gold hover:after:w-full after:transition-all after:duration-500"
+              >
+                {link.name}
+              </Link>
+            ))}
+          </nav>
+          
+          {/* Cart Desktop */}
+          <button 
+            onClick={toggleCart} 
+            className="text-gray-400 hover:text-[#d4af37] transition-colors relative"
+            aria-label="Carrito de compras"
+          >
+            <ShoppingBag size={20} />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-gradient-gold text-[#0A0A0A] text-[9px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+        </div>
 
-        {/* Mobile Menu Toggle */}
-        <button
-          className="md:hidden relative z-50 text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-          aria-label="Toggle menu"
-        >
-          {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        {/* Mobile Actions */}
+        <div className="flex md:hidden items-center gap-6">
+          {/* Cart Mobile */}
+          <button 
+            onClick={toggleCart} 
+            className="text-white relative"
+            aria-label="Carrito de compras"
+          >
+            <ShoppingBag size={22} />
+            {totalItems > 0 && (
+              <span className="absolute -top-2 -right-2 bg-gradient-gold text-[#0A0A0A] text-[10px] font-bold h-4 w-4 rounded-full flex items-center justify-center">
+                {totalItems}
+              </span>
+            )}
+          </button>
+
+          {/* Mobile Menu Toggle */}
+          <button
+            className="relative z-50 text-white"
+            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+            aria-label="Toggle menu"
+          >
+            {isMobileMenuOpen ? <X size={26} /> : <Menu size={26} />}
+          </button>
+        </div>
 
         {/* Mobile Nav */}
         <AnimatePresence>

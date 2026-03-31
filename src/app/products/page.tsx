@@ -5,10 +5,13 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { dummyProducts, Product } from "@/lib/data";
-import { Filter, X, ChevronDown, DollarSign } from "lucide-react";
+import { Filter, X, ChevronDown, DollarSign, ShoppingBag, Search, MessageCircle } from "lucide-react";
+import { useCart } from "@/context/CartContext";
 
 export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [searchQuery, setSearchQuery] = useState("");
+  const { addToCart } = useCart();
   
   // 1. Determinar productos de la categoría activa para calcular límites reales
   const categoryProducts = dummyProducts.filter(p => 
@@ -42,13 +45,15 @@ export default function CatalogPage() {
 
   const filteredProducts = dummyProducts.filter(p => {
     const matchesCategory = activeCategory === "Todos" || p.category?.trim() === activeCategory;
+    const matchesSearch = p.name.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesMinPrice = p.price >= minPrice;
     const matchesMaxPrice = p.price <= maxPrice;
-    return matchesCategory && matchesMinPrice && matchesMaxPrice;
+    return matchesCategory && matchesSearch && matchesMinPrice && matchesMaxPrice;
   });
 
   const clearFilters = () => {
     setActiveCategory("Todos");
+    setSearchQuery("");
     // Al resetear categoría, el useEffect ya volverá a poner los precios globales
   };
 
@@ -78,38 +83,57 @@ export default function CatalogPage() {
         {/* Integrated Navigation & Filter Section */}
         <div className="mb-20 space-y-12">
           {/* Categories bar */}
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-b border-[#d4af37]/10 pb-8">
-            <div className="flex gap-3 overflow-x-auto w-full pb-4 md:pb-0 scrollbar-hide">
-              {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  className={`px-5 py-2.5 rounded-full text-[9px] md:text-[10px] tracking-[0.2em] uppercase whitespace-nowrap transition-all duration-300 ${activeCategory === category
-                    ? "bg-gradient-gold text-[#0d1a19] shadow-[0_0_20px_rgba(212,175,55,0.4)] font-medium"
-                    : "glass-premium text-white/70 hover:text-[#d4af37] border border-transparent hover:border-[#d4af37]/30"
-                    }`}
-                >
-                  {category}
-                </button>
-              ))}
-            </div>
-            
-            <div className="flex gap-4 items-center shrink-0">
-              <button 
-                onClick={() => setShowPriceFilter(!showPriceFilter)}
-                className={`flex items-center gap-2 px-5 py-2.5 rounded-full text-[10px] tracking-[0.2em] uppercase transition-all duration-300 border ${showPriceFilter ? "bg-[#d4af37]/20 border-[#d4af37] text-[#d4af37]" : "glass-premium text-white/70 border-transparent hover:border-[#d4af37]/30"}`}
-              >
-                <DollarSign size={12} /> Precio <ChevronDown size={12} className={`transition-transform duration-300 ${showPriceFilter ? "rotate-180" : ""}`} />
-              </button>
+          <div className="flex flex-col gap-10 border-b border-[#d4af37]/10 pb-10">
+            {/* Top Row: Search & Actions */}
+            <div className="flex flex-col md:flex-row justify-between items-center gap-6">
+              <div className="relative w-full md:max-w-md">
+                <input
+                  type="text"
+                  placeholder="BUSCAR PRODUCTO..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="w-full glass-premium text-white/90 text-[10px] tracking-[0.3em] uppercase px-6 py-3 rounded-full border border-transparent focus:border-[#d4af37] focus:outline-none transition-all pr-12 shadow-sm"
+                />
+                <Search size={16} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#d4af37]/60 pointer-events-none" />
+              </div>
 
-              {(activeCategory !== "Todos" || minPrice !== Math.min(...dummyProducts.map(p => p.price)) || maxPrice !== Math.max(...dummyProducts.map(p => p.price))) && (
+              <div className="flex gap-4 items-center shrink-0">
                 <button 
-                  onClick={clearFilters}
-                  className="flex items-center gap-2 text-[#666] hover:text-white transition-colors text-[9px] tracking-widest uppercase shrink-0 border-b border-transparent hover:border-[#d4af37]/50 pb-0.5"
+                  onClick={() => setShowPriceFilter(!showPriceFilter)}
+                  className={`flex items-center gap-2 px-6 py-3 rounded-full text-[10px] tracking-[0.2em] uppercase transition-all duration-300 border ${showPriceFilter ? "bg-[#d4af37]/20 border-[#d4af37] text-[#d4af37]" : "glass-premium text-white/70 border-transparent hover:border-[#d4af37]/30"}`}
                 >
-                  <X size={12} /> Limpiar Filtros
+                  <DollarSign size={14} /> Precio <ChevronDown size={14} className={`transition-transform duration-300 ${showPriceFilter ? "rotate-180" : ""}`} />
                 </button>
-              )}
+
+                {(activeCategory !== "Todos" || searchQuery !== "" || minPrice !== Math.min(...dummyProducts.map(p => p.price)) || maxPrice !== Math.max(...dummyProducts.map(p => p.price))) && (
+                  <button 
+                    onClick={clearFilters}
+                    className="flex items-center gap-2 text-[#666] hover:text-white transition-colors text-[9px] tracking-widest uppercase shrink-0 border-b border-transparent hover:border-[#d4af37]/50 pb-0.5 ml-2"
+                  >
+                    <X size={14} /> Limpiar
+                  </button>
+                )}
+              </div>
+            </div>
+
+            {/* Bottom Row: Categories Scroll */}
+            <div className="relative w-full group">
+              <div className="flex gap-4 overflow-x-auto w-full pb-4 scrollbar-custom scroll-smooth">
+                {categories.map((category) => (
+                  <button
+                    key={category}
+                    onClick={() => setActiveCategory(category)}
+                    className={`px-6 py-2.5 rounded-full text-[9px] md:text-[10px] tracking-[0.2em] uppercase whitespace-nowrap transition-all duration-500 ${activeCategory === category
+                      ? "bg-gradient-gold text-[#0d1a19] shadow-[0_0_25px_rgba(212,175,55,0.4)] font-medium scale-105"
+                      : "glass-premium text-white/70 hover:text-[#d4af37] border border-transparent hover:border-[#d4af37]/30"
+                      }`}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              {/* Fade indicators */}
+              <div className="absolute right-0 top-0 bottom-4 w-20 bg-gradient-to-l from-[#050505] via-[#050505]/40 to-transparent pointer-events-none" />
             </div>
           </div>
 
@@ -216,15 +240,26 @@ export default function CatalogPage() {
                   <p className="text-[#d4af37] tracking-widest text-lg font-light mt-auto">${product.price}</p>
                 </div>
               </Link>
-              <a
-                href={`https://wa.me/56953237833?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full text-center py-4 rounded-full text-[10px] tracking-[0.2em] uppercase text-white hover:text-white border border-[#1a1a1a] group-hover:border-transparent group-hover:bg-[#d4af37]/10 transition-all duration-500 mt-auto flex items-center justify-center gap-2 group/btn relative overflow-hidden"
-              >
-                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-[#d4af37]/10 to-transparent translate-x-[-100%] group-hover/btn:translate-x-[100%] transition-transform duration-1000" />
-                Pedir por WhatsApp
-              </a>
+              <div className="flex items-center gap-2 mt-auto pt-2 w-full">
+                <a
+                  href={`https://wa.me/56953237833?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 text-center py-[14px] rounded-full text-[9px] tracking-[0.2em] uppercase text-white border border-[#1a1a1a] hover:border-[#d4af37]/50 hover:bg-[#d4af37]/5 transition-all duration-300 flex items-center justify-center gap-1.5"
+                >
+                  <MessageCircle size={12} strokeWidth={2.5} /> Pedir
+                </a>
+                <button
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    addToCart(product);
+                  }}
+                  className="flex-1 bg-gradient-gold text-[#0A0A0A] text-center py-[14px] rounded-full text-[9px] font-semibold tracking-[0.2em] uppercase hover:scale-[1.02] shadow-[0_0_15px_rgba(212,175,55,0.2)] transition-all duration-300 flex items-center justify-center gap-1.5"
+                >
+                  <ShoppingBag size={12} strokeWidth={2.5} /> Carrito
+                </button>
+              </div>
             </motion.div>
           ))}
         </div>

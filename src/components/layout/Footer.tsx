@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Instagram, Twitter, Mail } from "lucide-react";
+import { Instagram, Mail } from "lucide-react";
 
 export function Footer() {
   return (
@@ -68,16 +68,14 @@ export function Footer() {
             <ul className="space-y-4">
               <li>
                 <a href="mailto:silkdeluxe.spa@gmail.com" className="text-[#888] hover:text-[#d4af37] transition-colors text-sm font-light flex items-center gap-3">
-                  <Mail size={16} />
+                  <Mail size={20} />
                   silkdeluxe.spa@gmail.com
                 </a>
               </li>
               <li className="flex gap-5 mt-6">
-                <a href="#" className="text-[#888] hover:text-[#d4af37] transition-colors">
+                <a href="#" className="text-[#888] hover:text-[#d4af37] transition-colors text-sm font-light flex items-center gap-3">
                   <Instagram size={20} strokeWidth={1.5} />
-                </a>
-                <a href="#" className="text-[#888] hover:text-[#d4af37] transition-colors">
-                  <Twitter size={20} strokeWidth={1.5} />
+                  silkdeluxe.spa
                 </a>
               </li>
             </ul>
