@@ -33,14 +33,14 @@ export default function ContactPage() {
               title: "WhatsApp",
               desc: "Asesoría inmediata y privada.",
               action: "Contactar",
-              href: "https://wa.me/56995294014"
+              href: "https://wa.me/56953237833"
             },
             {
               icon: <Mail className="w-8 h-8 text-[#d4af37]" />,
               title: "Email",
               desc: "Consultas generales y soporte.",
               action: "Escribir",
-              href: "mailto:concierge@silkdeluxe.com"
+              href: "mailto:silkdeluxe.spa@gmail.com"
             },
             {
               icon: <MapPin className="w-8 h-8 text-[#d4af37]" />,

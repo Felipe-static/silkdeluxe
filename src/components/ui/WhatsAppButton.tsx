@@ -4,7 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
 export function WhatsAppButton() {
-  const phoneNumber = "56995294014"; // Replace with actual number
+  const phoneNumber = "56953237833"; // Replace with actual number
   const message = "Hola Silk Deluxe, me gustaría recibir asesoría personalizada.";
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
 

@@ -8,31 +8,8 @@ import { dummyProducts, Product } from "@/lib/data";
 import Image from "next/image";
 
 export default function Home() {
-  const [productsWithImages, setProductsWithImages] = useState<Product[]>([]);
+  const productsWithImages = dummyProducts.slice(0, 4);
 
-  useEffect(() => {
-    // Solo mostramos los 4 primeros en la portada
-    const featured = dummyProducts.slice(0, 4);
-
-    // Para cada producto, llamar a la API para buscar sus imágenes
-    const fetchImages = async () => {
-      const updated = await Promise.all(featured.map(async (p) => {
-        try {
-          const res = await fetch(`/api/images/${p.slug}`);
-          if (res.ok) {
-            const data = await res.json();
-            return { ...p, images: data.images.length > 0 ? data.images : ["/placeholder.svg"] };
-          }
-        } catch (e) {
-          console.error("Failed to load images for", p.slug);
-        }
-        return { ...p, images: ["/placeholder.svg"] }; // Fallback
-      }));
-      setProductsWithImages(updated);
-    };
-
-    fetchImages();
-  }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-[#050505]">
@@ -112,6 +89,7 @@ export default function Home() {
                       src={product.images[0]}
                       alt={product.name}
                       fill
+                      unoptimized
                       className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                     />
                     <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
@@ -130,7 +108,7 @@ export default function Home() {
                 </Link>
 
                 <a
-                  href={`https://wa.me/56995294014?text=Hola%20Silk%20Deluxe,%20quiero%20pedir%20este%20producto:%20${encodeURIComponent(product.name)}`}
+                  href={`https://wa.me/56953237833?text=Hola%20Silk%20Deluxe,%20quiero%20pedir%20este%20producto:%20${encodeURIComponent(product.name)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full text-center py-4 rounded-full text-[10px] tracking-[0.2em] uppercase text-white hover:text-white border border-[#1a1a1a] group-hover:border-transparent group-hover:bg-[#d4af37]/10 transition-all duration-500 mt-auto flex items-center justify-center gap-2 group/btn relative overflow-hidden"

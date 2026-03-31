@@ -20,16 +20,7 @@ export default function ProductPage() {
   useEffect(() => {
     const baseProduct = dummyProducts.find((p) => p.slug === slug);
     if (!baseProduct) return;
-
-    fetch(`/api/images/${slug}`)
-      .then(res => res.json())
-      .then(data => {
-        const images = data.images && data.images.length > 0 ? data.images : ["/placeholder.svg"];
-        setProduct({ ...baseProduct, images });
-      })
-      .catch(() => {
-        setProduct({ ...baseProduct, images: ["/placeholder.svg"] });
-      });
+    setProduct(baseProduct);
   }, [slug]);
 
   if (!product) {
@@ -41,7 +32,7 @@ export default function ProductPage() {
   }
 
   const whatsappMessage = `Hola, quiero este producto: ${product.name}`;
-  const whatsappUrl = `https://wa.me/56995294014?text=${encodeURIComponent(whatsappMessage)}`;
+  const whatsappUrl = `https://wa.me/56953237833?text=${encodeURIComponent(whatsappMessage)}`;
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">
@@ -68,6 +59,7 @@ export default function ProductPage() {
                 src={product.images[activeImage]}
                 alt={product.name}
                 fill
+                unoptimized
                 className="object-cover"
                 priority
               />
@@ -81,7 +73,7 @@ export default function ProductPage() {
                   className={`relative w-24 h-32 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activeImage === idx ? "ring-2 ring-[#d4af37] opacity-100" : "opacity-50 hover:opacity-80"
                     }`}
                 >
-                  <Image src={img} alt={`${product.name} ${idx + 1}`} fill className="object-cover" />
+                  <Image src={img} alt={`${product.name} ${idx + 1}`} fill unoptimized className="object-cover" />
                 </button>
               ))}
             </div>

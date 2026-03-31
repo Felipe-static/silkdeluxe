@@ -9,32 +9,11 @@ import { Filter } from "lucide-react";
 
 export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
-  const [productsWithImages, setProductsWithImages] = useState<Product[]>([]);
   const categories = ["Todos", ...Array.from(new Set(dummyProducts.map(p => p.category)))];
 
-  useEffect(() => {
-    const fetchImages = async () => {
-      const updated = await Promise.all(dummyProducts.map(async (p) => {
-        try {
-          const res = await fetch(`/api/images/${p.slug}`);
-          if (res.ok) {
-            const data = await res.json();
-            return { ...p, images: data.images.length > 0 ? data.images : ["/placeholder.svg"] };
-          }
-        } catch (e) {
-          console.error("Failed to load images for", p.slug);
-        }
-        return { ...p, images: ["/placeholder.svg"] }; // Fallback
-      }));
-      setProductsWithImages(updated);
-    };
-
-    fetchImages();
-  }, []);
-
   const filteredProducts = activeCategory === "Todos"
-    ? productsWithImages
-    : productsWithImages.filter(p => p.category === activeCategory);
+    ? dummyProducts
+    : dummyProducts.filter(p => p.category === activeCategory);
 
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">
@@ -97,6 +76,7 @@ export default function CatalogPage() {
                     src={product.images[0]}
                     alt={product.name}
                     fill
+                    unoptimized
                     className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
@@ -116,7 +96,7 @@ export default function CatalogPage() {
                 </div>
               </Link>
               <a
-                href={`https://wa.me/56995294014?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
+                href={`https://wa.me/56953237833?text=Hola,%20quiero%20este%20producto:%20${encodeURIComponent(product.name)}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full text-center py-4 rounded-full text-[10px] tracking-[0.2em] uppercase text-white hover:text-white border border-[#1a1a1a] group-hover:border-transparent group-hover:bg-[#d4af37]/10 transition-all duration-500 mt-auto flex items-center justify-center gap-2 group/btn relative overflow-hidden"

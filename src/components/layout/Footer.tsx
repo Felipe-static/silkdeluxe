@@ -67,9 +67,9 @@ export function Footer() {
             </h3>
             <ul className="space-y-4">
               <li>
-                <a href="mailto:contacto@silkdeluxe.com" className="text-[#888] hover:text-[#d4af37] transition-colors text-sm font-light flex items-center gap-3">
+                <a href="mailto:silkdeluxe.spa@gmail.com" className="text-[#888] hover:text-[#d4af37] transition-colors text-sm font-light flex items-center gap-3">
                   <Mail size={16} />
-                  contacto@silkdeluxe.com
+                  silkdeluxe.spa@gmail.com
                 </a>
               </li>
               <li className="flex gap-5 mt-6">
