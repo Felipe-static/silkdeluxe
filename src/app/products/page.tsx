@@ -5,10 +5,11 @@ import { motion } from "framer-motion";
 import Link from "next/link";
 import Image from "next/image";
 import { dummyProducts, Product } from "@/lib/data";
-import { Filter, X, ChevronDown, DollarSign } from "lucide-react";
+import { Filter, X, ChevronDown, DollarSign, Search } from "lucide-react";
 
 export default function CatalogPage() {
   const [activeCategory, setActiveCategory] = useState("Todos");
+  const [searchQuery, setSearchQuery] = useState("");
   
   // 1. Determinar productos de la categoría activa para calcular límites reales
   const categoryProducts = dummyProducts.filter(p => 
@@ -44,7 +45,8 @@ export default function CatalogPage() {
     const matchesCategory = activeCategory === "Todos" || p.category?.trim() === activeCategory;
     const matchesMinPrice = p.price >= minPrice;
     const matchesMaxPrice = p.price <= maxPrice;
-    return matchesCategory && matchesMinPrice && matchesMaxPrice;
+    const matchesSearch = searchQuery.trim() === "" || p.name.toLowerCase().includes(searchQuery.toLowerCase());
+    return matchesCategory && matchesMinPrice && matchesMaxPrice && matchesSearch;
   });
 
   const clearFilters = () => {
@@ -76,7 +78,21 @@ export default function CatalogPage() {
         </div>
 
         {/* Integrated Navigation & Filter Section */}
-        <div className="mb-20 space-y-12">
+        <div className="mb-20 space-y-8">
+          {/* Search bar */}
+          <div className="flex justify-center md:justify-start">
+            <div className="relative w-full md:max-w-md">
+              <input
+                type="text"
+                placeholder="BUSCAR PRODUCTO..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full glass-premium text-white/90 text-[10px] tracking-[0.3em] uppercase px-6 py-3 rounded-full border border-transparent focus:border-[#d4af37] focus:outline-none transition-all pr-12 shadow-sm"
+              />
+              <Search size={16} className="absolute right-5 top-1/2 -translate-y-1/2 text-[#d4af37]/60 pointer-events-none" />
+            </div>
+          </div>
+
           {/* Categories bar */}
           <div className="flex flex-col md:flex-row justify-between items-center gap-6 border-b border-[#d4af37]/10 pb-8">
             <div className="flex gap-3 overflow-x-auto w-full pb-4 md:pb-0 scrollbar-hide">
