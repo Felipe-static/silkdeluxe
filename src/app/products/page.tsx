@@ -213,7 +213,7 @@ export default function CatalogPage() {
                     src={product.images[0]}
                     alt={product.name}
                     fill
-                    unoptimized
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     loading="lazy"
                     className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                   />
@@ -221,7 +221,7 @@ export default function CatalogPage() {
 
                   {/* Hover Reveal Button */}
                   <div className="absolute bottom-0 left-0 w-full p-4 translate-y-full group-hover:translate-y-0 transition-transform duration-500 ease-out flex justify-center">
-                    <div className="bg-[#050505]/60 backdrop-blur-md text-white px-6 py-2 rounded-full text-[10px] tracking-[0.2em] uppercase border border-[#d4af37]/50 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
+                    <div className="bg-[#0c0c0c]/95 text-white px-6 py-2 rounded-full text-[10px] tracking-[0.2em] uppercase border border-[#d4af37]/50 shadow-[0_0_20px_rgba(212,175,55,0.2)]">
                       Ver Detalles
                     </div>
                   </div>

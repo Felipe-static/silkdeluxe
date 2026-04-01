@@ -59,7 +59,7 @@ export default function ProductPage() {
                 src={product.images[activeImage]}
                 alt={product.name}
                 fill
-                unoptimized
+                sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
@@ -73,7 +73,7 @@ export default function ProductPage() {
                   className={`relative w-24 h-32 rounded-xl overflow-hidden flex-shrink-0 transition-all duration-300 ${activeImage === idx ? "ring-2 ring-[#d4af37] opacity-100" : "opacity-50 hover:opacity-80"
                     }`}
                 >
-                  <Image src={img} alt={`${product.name} ${idx + 1}`} fill unoptimized className="object-cover" />
+                  <Image src={img} alt={`${product.name} ${idx + 1}`} fill sizes="96px" className="object-cover" />
                 </button>
               ))}
             </div>
