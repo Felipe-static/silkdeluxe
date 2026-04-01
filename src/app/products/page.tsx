@@ -205,7 +205,7 @@ export default function CatalogPage() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
-              className="group cursor-pointer flex flex-col glass-premium rounded-2xl p-4 md:p-5 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500 backdrop-blur-md h-full"
+              className="group cursor-pointer flex flex-col card-premium rounded-2xl p-4 md:p-5 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(212,175,55,0.08)] transition-all duration-500 h-full"
             >
               <Link href={`/product/${product.slug}`} className="flex-grow flex flex-col outline-none">
                 <div className="relative aspect-square overflow-hidden rounded-xl mb-6 bg-[#0a0a0a] border-gradient-gold flex-shrink-0">
@@ -214,6 +214,7 @@ export default function CatalogPage() {
                     alt={product.name}
                     fill
                     unoptimized
+                    loading="lazy"
                     className="object-cover transition-transform duration-1000 group-hover:scale-110 opacity-80 group-hover:opacity-100"
                   />
                   <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-transparent opacity-80 group-hover:opacity-40 transition-opacity duration-500" />
