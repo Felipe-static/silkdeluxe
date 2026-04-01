@@ -613,7 +613,7 @@ export const dummyProducts: Product[] = [
     "description": "Preservativos Sensor Plus - Ultra Sensible",
     "price": 2500,
     "images": [
-      "/placeholder.svg"
+      "https://lh4.googleusercontent.com/proxy/LSionwR6WZ9TStn5dWQR3FRgJPIFgOx9LTXMVHgWP0QcxgOEbRhXD3-YBLbvoh441cUbvVlSDRxpIT1oYrs8eIwLrCDPCJfnjCavYv2CDoTK7Gup3cSkqjXAJLX8T9hgVx8_HhAlyYrbx_zNNNdk_lCXpnrIRYJaiR6CkPi38vOyGM4OAruqiEPNq-AvSyQwnw"
     ],
     "category": "Salud e Higiene",
     "collection": "Salud e Higiene",
@@ -1845,7 +1845,7 @@ export const dummyProducts: Product[] = [
     "description": "Dildo Original Realístico Bicefalo Piel S (38 cms.)",
     "price": 35990,
     "images": [
-      "/placeholder.svg"
+      "https://i0.wp.com/www.moira.cl/wp-content/uploads/2021/02/22200005310-2_2000x.jpg?fit=1000%2C1000&ssl=1"
     ],
     "category": "Bienestar Sexual",
     "collection": "Bienestar Sexual",
