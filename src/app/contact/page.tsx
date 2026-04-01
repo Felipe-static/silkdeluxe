@@ -1,9 +1,32 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { Mail, MessageCircle, MapPin } from "lucide-react";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Mail, MessageCircle, MapPin, ChevronDown } from "lucide-react";
+
+const faqs = [
+  {
+    question: "¿Cómo garantizan la privacidad y discreción en los envíos?",
+    answer: "Tu privacidad es nuestra prioridad. Todos nuestros pedidos se preparan en empaques sobrios, elegantes y completamente privados. El paquete es 100% personalizado, seguro y discreto para garantizar tu total tranquilidad desde nuestra boutique hasta tus manos."
+  },
+  {
+    question: "¿Cuáles son los métodos de pago aceptados?",
+    answer: "Para brindarte una atención exclusiva, actualmente gestionamos nuestras compras de manera personalizada a través de WhatsApp, aceptando transferencias bancarias directas. Próximamente integraremos nuevas formas de pago para tu mayor comodidad."
+  },
+  {
+    question: "¿Cuál es el tiempo estimado de entrega?",
+    answer: "Cada experiencia Silk Deluxe se prepara con la máxima dedicación y cuidado. El tiempo estimado de entrega a cualquier punto del país es de 2 a 5 días hábiles, procurando siempre un envío rápido y seguro."
+  },
+  {
+    question: "¿Cuentan con políticas de cambios o devoluciones?",
+    answer: "Sí, la calidad es nuestro compromiso, por lo que respaldamos las devoluciones por productos con defectos de fábrica. Sin embargo, por estrictos motivos de higiene y salud, no aceptamos cambios o devoluciones si el producto ha sido utilizado o su sello de seguridad original fue roto."
+  }
+];
 
 export default function ContactPage() {
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+  const [showFaqs, setShowFaqs] = useState(false);
+
   return (
     <div className="min-h-screen pt-32 pb-24 px-6 md:px-12 bg-[#050505]">
       <div className="container mx-auto max-w-5xl">
@@ -47,7 +70,7 @@ export default function ContactPage() {
               title: "Boutique",
               desc: "Atención con cita previa.",
               action: "Agendar",
-              href: "#"
+              href: "https://wa.me/56953237833"
             }
           ].map((item, i) => (
             <motion.div
@@ -76,22 +99,73 @@ export default function ContactPage() {
           ))}
         </div>
 
-        {/* FAQ Teaser */}
+        {/* FAQ Teaser & Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8 }}
-          className="text-center glass-premium p-16 rounded-3xl border-gradient-gold relative overflow-hidden"
+          className="glass-premium p-8 md:p-16 rounded-3xl border-gradient-gold relative overflow-hidden"
         >
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(212,175,55,0.05)_0%,transparent_70%)] pointer-events-none" />
-          <h2 className="font-serif text-3xl md:text-4xl mb-6 text-white relative z-10">Preguntas <span className="text-gradient-gold">Frecuentes</span></h2>
-          <p className="text-[#888] font-light max-w-2xl mx-auto mb-12 relative z-10 h-auto">
-            ¿Tienes dudas sobre envíos, discreción o garantías? Consulta nuestra sección de preguntas frecuentes para obtener respuestas inmediatas.
-          </p>
-          <button className="relative z-10 inline-flex items-center gap-3 bg-[#d4af37]/10 border border-[#d4af37]/30 text-white px-8 py-4 rounded-full font-medium tracking-[0.2em] uppercase text-xs hover:bg-[#d4af37]/20 transition-all duration-500 shadow-[0_0_30px_rgba(212,175,55,0.1)] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]">
-            Ver FAQ
-          </button>
+
+          <div className="text-center mb-8 relative z-10">
+            <h2 className="font-serif text-3xl md:text-4xl mb-6 text-white">Preguntas <span className="text-gradient-gold">Frecuentes</span></h2>
+            <p className="text-[#888] font-light max-w-2xl mx-auto mb-8 h-auto">
+              ¿Tienes dudas sobre envíos, discreción o garantías? Consulta nuestra sección de preguntas frecuentes para obtener respuestas inmediatas.
+            </p>
+
+            {!showFaqs && (
+              <button
+                onClick={() => setShowFaqs(true)}
+                className="inline-flex items-center gap-3 bg-[#d4af37]/10 border border-[#d4af37]/30 text-white px-8 py-4 rounded-full font-medium tracking-[0.2em] uppercase text-xs hover:bg-[#d4af37]/20 transition-all duration-500 shadow-[0_0_30px_rgba(212,175,55,0.1)] hover:shadow-[0_0_40px_rgba(212,175,55,0.2)]"
+              >
+                Ver FAQ
+              </button>
+            )}
+          </div>
+
+          <AnimatePresence>
+            {showFaqs && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: "auto" }}
+                exit={{ opacity: 0, height: 0 }}
+                className="relative z-10 max-w-3xl mx-auto space-y-4"
+              >
+                {faqs.map((faq, index) => (
+                  <div
+                    key={index}
+                    className="border border-[#d4af37]/20 rounded-2xl bg-[#050505]/50 overflow-hidden backdrop-blur-sm transition-colors hover:border-[#d4af37]/40"
+                  >
+                    <button
+                      onClick={() => setOpenFaq(openFaq === index ? null : index)}
+                      className="w-full text-left px-6 py-5 flex items-center justify-between gap-4 focus:outline-none"
+                    >
+                      <span className="font-serif text-lg text-white">{faq.question}</span>
+                      <ChevronDown
+                        className={`w-5 h-5 text-[#d4af37] transition-transform duration-300 flex-shrink-0 ${openFaq === index ? "rotate-180" : ""}`}
+                      />
+                    </button>
+                    <AnimatePresence>
+                      {openFaq === index && (
+                        <motion.div
+                          initial={{ height: 0, opacity: 0 }}
+                          animate={{ height: "auto", opacity: 1 }}
+                          exit={{ height: 0, opacity: 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <div className="px-6 pb-5 pt-0 text-[#888] font-light leading-relaxed">
+                            {faq.answer}
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
+                  </div>
+                ))}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </div>
     </div>
